@@ -36,12 +36,10 @@ jobs:
           npm run build --prod
 
 
-
-
-      - name: 🚀 Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./deploy
+          branch: gh-pages
           folder: dist/realtime-trading-dashboard
+          clean: true
+          token: ${{ secrets.GITHUB_TOKEN }}
