@@ -35,10 +35,13 @@ jobs:
         run: |
           npm run build --prod
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+
+
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./deploy
           folder: dist/realtime-trading-dashboard
-          clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}
