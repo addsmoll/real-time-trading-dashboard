@@ -1,39 +1,44 @@
-name: Deploy Angular SPA
+name: Deploy Angular SPA to GitHub Pages
 
 on:
   push:
     branches:
       - master
 
-permissions:
-  contents: write
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --base-href "/realtime-trading-dashboard/"
-
-      - name: Copy index.html to 404.html
-        run: cp dist/browser/index.html dist/browser/404.html
+        run: |
+          npm run build -- --prod
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist/browser
-          token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
+          token: ${{ secrets.GITHUB_TOKEN }}
