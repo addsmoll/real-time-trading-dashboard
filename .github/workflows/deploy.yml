@@ -21,7 +21,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build -- --output-path=dist/realtime-trading-dashboard --base-href="/realtime-trading-dashboard/"
+      - run: npm run build -- --output-path=dist/realtime-trading-dashboard/browser --base-href="/realtime-trading-dashboard/"
 
 
 
@@ -29,6 +29,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/realtime-trading-dashboard
+          folder: dist/realtime-trading-dashboard/browser
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
