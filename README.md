@@ -1,59 +1,108 @@
-# RealtimeTradingDashboard
+# 🧪 Real-time Trading Dashboard (Angular + NgRx + WebSocket)
+### 🎯 Цель
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+Разработать Angular-приложение с использованием **NgRx и WebSocket**, которое отображает и обновляет данные в реальном времени, поддерживает сохранение состояния и корректно обрабатывает ошибки.
 
-## Development server
+## 🛠 Стек технологий
 
-To start a local development server, run:
+### Обязатально
+- Angular ≥ 15
+- TypeScript
+- NgRx:
+  - `@ngrx/store`
+  - `@ngrx/effects`
+  - `@ngrx/entity`
+  - `@ngrx/router-store`
+- RxJS
+- WebSocket (native или через сервис)
 
-```bash
-ng serve
+### Будет плюсом
+- Standalone Components
+- Angular Signals
+- ESLint (RxJS rules)
+- OnPush change detection
+
+## 📌 Бизнес-кейс
+
+Есть **торговая сессия**, в рамках которой приходят **оферы** по WebSocket.
+
+### Оффер сродержит:
+```ts
+export interface Offer {
+  id: number;
+  product: string;
+  price: number;
+  volume: number;
+  updatedAt: string;
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 📐 Функциональные требования
 
-## Code scaffolding
+### 1 Начальная загрузка данных (REST)
+- При переходе на маршрут /session/:id
+- Загрузка списка офферов по HTTP
+- Сохранение данных в NgRx Store
+- Использовать createEntityAdapter
+- Повторный HTTP-запрос не должен выполняться, если данные уже есть в Store
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
+### 2 Обновления в реальном времени (WebSocket)
+- Подключение к WebSocket при входе на страницу
+### Обработка событий:
+```ts
+type SocketEvent =
+  | { type: 'OFFER_CREATED'; payload: Offer }
+  | { type: 'OFFER_UPDATED'; payload: Offer }
+  | { type: 'OFFER_DELETED'; payload: { id: number } };
 ```
+- Store обновляется без перезагрузки страницы
+- Сортировка и фильтрация не должны ломаться при обновлениях
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+### 3 Управление состоянием
+Store должен содержать:
+- список офферов
+- состояние загрузки
+- состояние ошибки
+- статус **WebSocket-соединения**
+  Требования:
+- состояние сохраняется при переключении табов/маршрутов
+- если состояния нет в storage — используется дефолтная конфигурация таблицы
 
-## Building
+---
 
-To build the project run:
+### 4 Управление состоянием
+HTTP
+- Обработка ошибок в `Effects`
+- Отображение понятных сообщений пользователю
 
-```bash
-ng build
-```
+**WebSocket**
+- Обработка разрывов соединения
+- Реализация переподключения (exponential backoff)
+- Хранение статуса соединения в Store
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+### 5 UI требования
+- Таблица офферов
+- Обновление только изменённых строк (без полного перерендера)
+- `ChangeDetectionStrategy.OnPush`
+- Индикатор соединения:
+  - 🟢 Online
+  - 🔴 Offline
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📐 Архитектурные требования
+Решение обязательно должно демонстрировать:
+- Feature-based структуру NgRx
+- Корректное использование:
+  - Actions
+  - Reducers
+  - Selectors
+  - Effects
+- Отсутствие subscribe() в компонентах
+- Использование `async pipe`
+- Корректный cleanup WebSocket
+- Рекомендуется использовать Facade-паттерн (**не обязательно**)

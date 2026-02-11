@@ -3,12 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false,
-    appHostBaseUrl: 'http://localhost:4200/',
-    serviceUrl: 'http://localhost:3000/',
-    mapKey: 'AIzaSyB3aj0rAWOVPxjOaFwPw7Mn9rGnhXbGOws',
-    mongoConnUrl: 'mongodb://127.0.0.1:27017/vg', //'mongodb://localhost:3000/vg',
-    webPayApi: 'https://securesandbox.webpay.by/api/v1/payment'
+  production: false,
+  baseSessionUrl: '/session',
+
 
 
 };

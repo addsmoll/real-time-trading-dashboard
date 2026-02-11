@@ -14,7 +14,6 @@ export class CustomSerializer
 
     let route: ActivatedRouteSnapshot = routerState.root;
 
-    // идём до самого глубокого child route
     while (route.firstChild) {
       route = route.firstChild;
     }

@@ -1,41 +1,58 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { retryWhen, tap, delayWhen } from 'rxjs/operators';
+import { Observable, interval, merge, of } from 'rxjs';
+import { map, switchMap, startWith, takeWhile, withLatestFrom } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { selectAllOffers } from '../state/session.selectors';
 
-export interface SocketEvent<T = any> {
-  type: string;
-  payload: T;
+export interface SocketEvent {
+  type: 'STATUS' | 'OFFER_UPDATED';
+  payload: any;
 }
 
 @Injectable({ providedIn: 'root' })
-export class WsService {
-  private url = 'wss://example.com/session';
-  private socket$!: WebSocketSubject<SocketEvent>;
-  private messages$ = new Subject<SocketEvent>();
-  private reconnectAttempts = 0;
+export class MockWsService {
+  private sessionId: string | null = null;
+  private connected = false;
+
+  constructor(private store: Store) {}
 
   connect(sessionId: string): Observable<SocketEvent> {
-    if (!this.socket$ || this.socket$.closed) {
-      this.socket$ = webSocket<SocketEvent>(`${this.url}/${sessionId}`);
-      this.socket$.pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            tap(() => this.reconnectAttempts++),
-            delayWhen(() => timer(Math.min(1000 * 2 ** this.reconnectAttempts, 30000)))
-          )
-        )
-      ).subscribe({
-        next: msg => this.messages$.next(msg),
-        error: err => this.messages$.error(err),
-        complete: () => this.messages$.complete()
-      });
-    }
-    return this.messages$.asObservable();
+    this.sessionId = sessionId;
+    this.connected = true;
+
+
+    const statusEvent: SocketEvent = { type: 'STATUS', payload: 'online' as const };
+
+
+    const updates$ = interval(500).pipe(
+      takeWhile(() => this.connected),
+      withLatestFrom(this.store.pipe(select(selectAllOffers))),
+      map(([_, offers]) => {
+
+        const sessionOffers = offers.filter(o => o.product.includes(sessionId));
+
+        if (sessionOffers.length === 0) return null;
+
+        const idx = Math.floor(Math.random() * sessionOffers.length);
+        const offer = { ...sessionOffers[idx] };
+
+
+        const delta = (Math.random() * 0.02 - 0.01) * offer.price; // ±1%
+        offer.price = Math.max(0, offer.price + delta);
+        offer.updatedAt = new Date().toISOString();
+
+        return { type: 'OFFER_UPDATED', payload: offer } as SocketEvent;
+      }),
+
+      switchMap(event => event ? of(event) : of())
+    );
+
+
+    return merge(of(statusEvent), updates$);
   }
 
   disconnect() {
-    this.socket$?.complete();
-    this.reconnectAttempts = 0;
+    this.connected = false;
+    this.sessionId = null;
   }
 }

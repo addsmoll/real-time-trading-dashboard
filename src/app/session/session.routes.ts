@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Routes } from '@angular/router';
 
-@Component({
-  selector: 'app-session-page',
-  imports: [],
-  templateUrl: './session-page.component.html',
-  styleUrl: './session-page.component.scss'
-})
-export class SessionPageComponent {
-
-}
+export const SESSION_ROUTES: Routes = [
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('./pages/session-page/session-page.component')
+        .then(m => m.SessionPageComponent)
+  }
+];
