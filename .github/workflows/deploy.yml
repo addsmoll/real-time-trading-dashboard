@@ -44,7 +44,7 @@ jobs:
       # SPA routing fallback
       # -----------------------------
       - name: Add SPA fallback
-        run: cp dist/browser/index.html dist/browser/404.html
+        run: cp dist/realtime-trading-dashboard/browser/index.html dist/realtime-trading-dashboard/browser/404.html
 
       # -----------------------------
       # Deploy to GitHub Pages
@@ -53,6 +53,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/browser
+          folder: dist/realtime-trading-dashboard
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
