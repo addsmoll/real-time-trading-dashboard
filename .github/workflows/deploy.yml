@@ -1,45 +1,58 @@
-name: Deploy Angular SPA to GitHub Pages
+name: Deploy Angular SPA
 
 on:
   push:
     branches:
       - master
+
 permissions:
   contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
 
+    steps:
+      # -----------------------------
+      # Checkout repo
+      # -----------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
-      - name: Set up Node.js
+      # -----------------------------
+      # Setup Node
+      # -----------------------------
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-
+      # -----------------------------
+      # Install deps
+      # -----------------------------
       - name: Install dependencies
         run: npm ci
 
+      # -----------------------------
+      # Build Angular
+      # IMPORTANT: base-href !!!
+      # -----------------------------
       - name: Build Angular app
         run: npm run build -- --base-href "/realtime-trading-dashboard/"
-      - name: Copy index.html to 404.html
+
+      # -----------------------------
+      # SPA routing fallback
+      # -----------------------------
+      - name: Add SPA fallback
         run: cp dist/browser/index.html dist/browser/404.html
+
+      # -----------------------------
+      # Deploy to GitHub Pages
+      # -----------------------------
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/browser
-          clean: true
+          folder: dist
           token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true
