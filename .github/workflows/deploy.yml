@@ -1,10 +1,12 @@
 name: Deploy Angular SPA
 
+# Запуск при пуше в master
 on:
   push:
     branches:
       - master
 
+# Разрешаем workflow писать в репозиторий
 permissions:
   contents: write
 
@@ -13,22 +15,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 1. Клонируем репозиторий
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
+      # 2. Устанавливаем Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - run: npm ci
 
-      - run: npm run build -- --output-path=dist/realtime-trading-dashboard/browser --base-href="/realtime-trading-dashboard/"
+      - name: Install dependencies
+        run: npm ci
 
 
+      - name: Build Angular app
+        run: npm run build -- --base-href="/realtime-trading-dashboard/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
+          branch: gh-pages                          # ветка для GitHub Pages
           folder: dist/realtime-trading-dashboard/browser
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
