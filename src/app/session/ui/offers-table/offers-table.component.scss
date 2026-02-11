@@ -1,7 +1,7 @@
 .offers-table-container {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 10px auto;
 
   .ws-status {
     display: flex;
@@ -16,14 +16,50 @@
       display: inline-block;
       margin-right: 6px;
 
-      &.online { background-color: #4caf50; }   // green
-      &.offline { background-color: #f44336; }  // red
+
     }
   }
 
-  table {
+  .offers-table {
     width: 100%;
-    border-spacing: 0;
+    table-layout: fixed;
+    th.mat-header-cell,
+    td.mat-cell {
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th.mat-header-cell {
+      font-weight: bold;
+    }
+
+    /* Фиксируем ширину столбцов */
+    th.mat-header-cell:nth-child(1),
+    td.mat-cell:nth-child(1) {
+      width: 50px; // ID
+    }
+
+    th.mat-header-cell:nth-child(2),
+    td.mat-cell:nth-child(2) {
+      width: 150px; // Product
+    }
+
+    th.mat-header-cell:nth-child(3),
+    td.mat-cell:nth-child(3) {
+      width: 100px; // Price
+    }
+
+    th.mat-header-cell:nth-child(4),
+    td.mat-cell:nth-child(4) {
+      width: 100px; // Volume
+    }
+
+    th.mat-header-cell:nth-child(5),
+    td.mat-cell:nth-child(5) {
+      width: 130px; // UpdatedAt
+    }
   }
 
   th.mat-header-cell {

@@ -1,4 +1,4 @@
-<div class="offers-table">
+<div class="offers-table-container ">
   <div class="status">
     <span>
           @if (wsStatus === 'online'){
@@ -22,7 +22,7 @@
     </mat-tab>
 
   </mat-tab-group>
-  <table mat-table [dataSource]="offers" class="mat-elevation-z8">
+  <table mat-table [dataSource]="offers" class="offers-table mat-elevation-z8">
 
     <ng-container matColumnDef="product">
       <th mat-header-cell *matHeaderCellDef>Product</th>
@@ -31,7 +31,7 @@
 
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let offer">{{ offer.price }}</td>
+      <td mat-cell *matCellDef="let offer">{{ offer.price | currency }}</td>
     </ng-container>
 
     <ng-container matColumnDef="volume">
@@ -41,7 +41,7 @@
 
     <ng-container matColumnDef="updatedAt">
       <th mat-header-cell *matHeaderCellDef>Updated</th>
-      <td mat-cell *matCellDef="let offer">{{ offer.updatedAt }}</td>
+      <td mat-cell *matCellDef="let offer">{{  offer.updatedAt | date:'longTime' }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
