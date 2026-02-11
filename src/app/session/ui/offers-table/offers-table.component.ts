@@ -8,11 +8,11 @@ import {
 import { Offer } from '../../models/offer.model';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-offers-table',
@@ -22,11 +22,10 @@ import { filter, map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OffersTableComponent {
-
   @Input({ required: true }) offers: Offer[] = [];
   @Input({ required: true }) wsStatus: 'online' | 'offline' = 'offline';
-
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   tabs = [
     { label: 'BTC', id: '1' },
@@ -34,20 +33,15 @@ export class OffersTableComponent {
     { label: 'SOL', id: '3' }
   ];
 
-  private currentSession = toSignal(
-    this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
-      map(() => {
-        const url = this.router.url;
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-      })
+  private sessionId = toSignal(
+    this.route.paramMap.pipe(
+      map(params => params.get('id') ?? '1')
     ),
     { initialValue: '1' }
   );
 
   selectedIndex = computed(() =>
-    this.tabs.findIndex(t => t.id === this.currentSession())
+    this.tabs.findIndex(t => t.id === this.sessionId())
   );
 
   onTabChange(index: number) {
