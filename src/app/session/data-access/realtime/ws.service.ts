@@ -20,34 +20,24 @@ export class MockWsService {
     this.sessionId = sessionId;
     this.connected = true;
 
-
     const statusEvent: SocketEvent = { type: 'STATUS', payload: 'online' as const };
-
 
     const updates$ = interval(500).pipe(
       takeWhile(() => this.connected),
       withLatestFrom(this.store.pipe(select(selectAllOffers))),
       map(([_, offers]) => {
-
-        const sessionOffers = offers.filter(o => o.product.includes(sessionId));
-
+        const sessionOffers = offers.filter(o => o.id.toString().includes(sessionId));
         if (sessionOffers.length === 0) return null;
-
         const idx = Math.floor(Math.random() * sessionOffers.length);
         const offer = { ...sessionOffers[idx] };
-
-
-        const delta = (Math.random() * 0.02 - 0.01) * offer.price; // ±1%
-        offer.price = Math.max(0, offer.price + delta);
+        const delta = (Math.random() * 0.02 - 0.01) * offer.price;
+        offer.price = parseFloat((Math.max(0, offer.price + delta)).toFixed(2));
         offer.updatedAt = new Date().toISOString();
-
         return { type: 'OFFER_UPDATED', payload: offer } as SocketEvent;
       }),
 
       switchMap(event => event ? of(event) : of())
     );
-
-
     return merge(of(statusEvent), updates$);
   }
 

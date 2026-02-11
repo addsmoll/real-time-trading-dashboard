@@ -13,45 +13,5 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
 
-  private router = inject(Router);
-
-  tabs = [
-    { label: 'BTC', id: '1' },
-    { label: 'ETH', id: '2' },
-    { label: 'SOL', id: '3' }
-  ];
-
-  private currentSession = signal<string>('1');
-
-  selectedIndex = computed(() =>
-    this.tabs.findIndex(t => t.id === this.currentSession())
-  );
-
-  constructor() {
-
-    this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(() => {
-
-        const url = this.router.url;
-        const parts = url.split('/');
-
-        const sessionId = parts[parts.length - 1];
-
-        if (sessionId) {
-          this.currentSession.set(sessionId);
-        }
-      });
-  }
-
-  onTabChange(index: number) {
-
-    const sessionId = this.tabs[index].id;
-
-    this.router.navigate([
-      environment.baseSessionUrl,
-      sessionId
-    ]);
-  }
 
 }

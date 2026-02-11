@@ -7,6 +7,7 @@ import {OffersTableComponent} from '../../ui/offers-table/offers-table.component
   selector: 'app-session-page',
   standalone: true,
   templateUrl: './session-page.component.html',
+  styleUrls: ['./session-page.component.scss'],
   imports: [CommonModule, OffersTableComponent, AsyncPipe],
 })
 export class SessionPageComponent {

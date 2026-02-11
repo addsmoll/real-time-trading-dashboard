@@ -1,0 +1,53 @@
+/* session.page.scss */
+.session-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .dashboard-title {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .github-link img {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.2s ease;
+    }
+
+    .github-link:hover img {
+      transform: scale(1.2);
+    }
+  }
+
+  .status {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+
+    span.online,
+    span.offline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-dot.online {
+      color: green;
+    }
+
+    .status-dot.offline {
+      color: red;
+    }
+  }
+
+  .offers-table {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+}

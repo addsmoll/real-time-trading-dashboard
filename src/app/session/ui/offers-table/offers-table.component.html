@@ -10,7 +10,18 @@
     </span>
 
   </div>
+  <mat-tab-group
+    [selectedIndex]="selectedIndex()"
+    (selectedIndexChange)="onTabChange($event)"
+    animationDuration="0ms">
 
+    <mat-tab *ngFor="let tab of tabs">
+      <ng-template mat-tab-label>
+        {{ tab.label }}
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
   <table mat-table [dataSource]="offers" class="mat-elevation-z8">
 
     <ng-container matColumnDef="product">
