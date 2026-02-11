@@ -1,20 +1,15 @@
 
-<!-- session.page.html -->
 <div class="session-page">
-  <!-- Титульник -->
   <h1 class="dashboard-title">
     🧪 Real-time Trading Dashboard (Angular + NgRx + WebSocket)
-    <a href="https://github.com/" target="_blank" class="github-link" aria-label="GitHub">
-      <img src="assets/github.svg" alt="GitHub" />
-    </a>
   </h1>
-
-
-
-  <!-- Таблица офферов -->
   <app-offers-table
     [offers]="(offers$ | async)!"
     [wsStatus]="(wsStatus$ | async)!"
     class="offers-table">
   </app-offers-table>
+
+  <a href="https://github.com/addsmoll/real-time-trading-dashboard" target="_blank" class="github-link" aria-label="GitHub">
+    <img src="github.png" alt="GitHub" />
+  </a>
 </div>

@@ -5,6 +5,20 @@
   padding: 8px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
+
+  .github-link img {
+    margin-left: 24px;
+    margin-top: 24px;
+    height: 34px;
+    width: 34px;
+
+
+    transition: transform 0.2s ease;
+  }
+
+  .github-link:hover img {
+    transform: scale(1.2);
+  }
   .dashboard-title {
     margin-bottom: 2rem;
     font-size: 1.5rem;
@@ -12,15 +26,7 @@
     align-items: center;
     gap: 0.5rem;
 
-    .github-link img {
-      width: 24px;
-      height: 24px;
-      transition: transform 0.2s ease;
-    }
 
-    .github-link:hover img {
-      transform: scale(1.2);
-    }
   }
 
   .status {
