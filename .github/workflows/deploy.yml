@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --base-href "/REPO_NAME/"
+        run: npm run build -- --base-href "/realtime-trading-dashboard/"
 
       - name: Copy index.html to 404.html
         run: cp dist/browser/index.html dist/browser/404.html
