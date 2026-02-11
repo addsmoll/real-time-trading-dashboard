@@ -38,7 +38,7 @@ jobs:
       # IMPORTANT: base-href !!!
       # -----------------------------
       - name: Build Angular app
-        run: npm run build -- --base-href "/realtime-trading-dashboard/"
+        run: npm run build --base-href "/realtime-trading-dashboard/"
 
       # -----------------------------
       # SPA routing fallback
