@@ -1,12 +1,10 @@
 name: Deploy Angular SPA
 
-# Запуск при пуше в master
 on:
   push:
     branches:
       - master
 
-# Разрешаем workflow писать в репозиторий
 permissions:
   contents: write
 
@@ -15,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Клонируем репозиторий
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Устанавливаем Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,7 +27,7 @@ jobs:
 
 
       - name: Build Angular app
-        run: npm run build"
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
