@@ -49,6 +49,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/browser
+          folder: dist/real-time-trading-dashboard/browser
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true
