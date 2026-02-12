@@ -38,17 +38,15 @@ jobs:
       # IMPORTANT: base-href !!!
       # -----------------------------
       - name: Build Angular app
-        run: npm run build --base-href/real-time-trading-dashboard
-
+        run: npm run build
 
 
       # -----------------------------
       # Deploy to GitHub Pages
       # -----------------------------
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          branch: gh-pages
-          folder: dist/browser
-          token: ${{ secrets.GITHUB_TOKEN }}
-          clean: true
+             github_token: ${{ secrets.GITHUB_TOKEN }}
+             publish_branch: gh-pages
+             publish_dir: dist/real-time-trading-dashboard/browser
