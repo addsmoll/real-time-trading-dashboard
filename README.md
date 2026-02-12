@@ -1,3 +1,8 @@
+
+
+### 📌 Ссылка на приложение: 
+### https://addsmoll.github.io/real-time-trading-dashboard/
+
 # 🧪 Real-time Trading Dashboard (Angular + NgRx + WebSocket)
 ### 🎯 Цель
 
