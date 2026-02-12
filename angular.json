@@ -31,7 +31,6 @@
                 "input": "public"
               }
             ],
-            "baseHref": "/real-time-trading-dashboard/",
             "styles": [
               "@angular/material/prebuilt-themes/rose-red.css",
               "src/styles.scss"
