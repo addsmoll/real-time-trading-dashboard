@@ -40,8 +40,6 @@ jobs:
       - name: Build Angular app
         run: npm run build
 
-
-
       # -----------------------------
       # Deploy to GitHub Pages
       # -----------------------------
