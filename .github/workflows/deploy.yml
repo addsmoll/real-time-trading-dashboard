@@ -38,7 +38,7 @@ jobs:
       # IMPORTANT: base-href !!!
       # -----------------------------
       - name: Build Angular app
-        run: npx ng build --base-href=/realtime-trading-dashboard/
+        run: npx ng build --base-href=/real-time-trading-dashboard/
 
 
       # -----------------------------
